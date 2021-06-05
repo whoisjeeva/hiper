@@ -34,5 +34,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':http')
-    implementation project(":utils")
+    implementation project(':util')
 }
