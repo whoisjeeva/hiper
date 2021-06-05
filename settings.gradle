@@ -1,0 +1,3 @@
+include ':utils'
+include ':app', ':http'
+rootProject.name='HiperExample'
