@@ -1,5 +1,5 @@
 [![](https://jitpack.io/v/anyms/hiper.svg)](https://jitpack.io/#anyms/hiper)
-[![Build Status](https://travis-ci.org/anyms/hiper.svg?branch=master)](https://travis-ci.org/anyms/hiper)
+[![Build Status](https://travis-ci.com/anyms/hiper.svg?branch=master)](https://travis-ci.com/anyms/hiper)
 [![License](https://img.shields.io/github/license/anyms/hiper.svg)](https://github.com/anyms/hiper/blob/master/LICENSE)
 
 # Hiper - A Human Friendly HTTP Library for Android
@@ -22,13 +22,13 @@ allprojects {
 Add the dependency
 
 ```css
-implementation 'com.github.lineofapi.hiper:http:1.0.3'
+implementation "com.github.anyms.hiper:http:$hiper_version"
 ```
 
 For utils
 
 ```css
-implementation 'com.github.lineofapi.hiper:utils:1.0.3'
+implementation "com.github.anyms.hiper:util:$hiper_version"
 ```
 
 
