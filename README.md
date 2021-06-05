@@ -1,6 +1,6 @@
-[![](https://jitpack.io/v/openspidy/hiper.svg)](https://jitpack.io/#openspidy/hiper)
-[![Build Status](https://travis-ci.org/openspidy/hiper.svg?branch=master)](https://travis-ci.org/openspidy/hiper)
-[![License](https://img.shields.io/github/license/openspidy/hiper.svg)](https://github.com/openspidy/hiper/blob/master/LICENSE)
+[![](https://jitpack.io/v/anyms/hiper.svg)](https://jitpack.io/#anyms/hiper)
+[![Build Status](https://travis-ci.org/anyms/hiper.svg?branch=master)](https://travis-ci.org/anyms/hiper)
+[![License](https://img.shields.io/github/license/anyms/hiper.svg)](https://github.com/anyms/hiper/blob/master/LICENSE)
 
 # Hiper - A Human Friendly HTTP Library for Android
 
