@@ -24,8 +24,13 @@ class Dialog(private val context: Context) {
         return this
     }
 
-    fun withCustomView(v: View): Dialog {
+    fun withView(v: View): Dialog {
         builder.setView(v)
+        return this
+    }
+
+    fun withView(resId: Int): Dialog {
+        builder.setView(resId)
         return this
     }
 
