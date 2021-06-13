@@ -12,7 +12,7 @@
 
 > Hiper is for human by human.
 
-# Getting Started
+## Getting Started
 
 Add it in your root build.gradle at the end of repositories
 
@@ -38,7 +38,7 @@ implementation "com.github.okbash.hiper:util:$hiper_version"
 ```
 
 
-# Using utils
+## Using utils
 
 The utils library contains few useful method that makes your android development little bit easier.
 
@@ -198,7 +198,7 @@ debug(tinyDB.getString("KEY"))
 ```
 
 
-# Using HTTP
+## Using HTTP
 
 Create a hiper instance.
 
