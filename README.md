@@ -6,7 +6,7 @@
     <a href="https://jitpack.io/#okbash/hiper"><img src="https://img.shields.io/jitpack/v/github/okbash/hiper?style=for-the-badge" alt="Release"></a>
     <a href="https://travis-ci.com/okbash/hiper"><img src="https://img.shields.io/travis/com/okbash/hiper/master?style=for-the-badge" alt="Build Status"></a>
     <a href="https://github.com/okbash/hiper/blob/master/LICENSE"><img src="https://img.shields.io/github/license/okbash/hiper.svg?style=for-the-badge" alt="License"></a>
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/okbash/hiper?logo=GitHub&style=for-the-badge">
+<!--     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/okbash/hiper?logo=GitHub&style=for-the-badge"> -->
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/okbash/hiper?logo=GitHub&style=for-the-badge">
     <a href="https://github.com/okbash/hiper/issues"><img alt="GitHub open issues" src="https://img.shields.io/github/issues/okbash/hiper?style=for-the-badge"></a>
 </p>
