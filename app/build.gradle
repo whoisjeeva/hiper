@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
     defaultConfig {
-        applicationId "app.spidy.hiperexample"
+        applicationId "sh.fearless.hiperexample"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

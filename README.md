@@ -133,7 +133,7 @@ Check if dark mode is enabled
 
 ```kotlin
 if (isDarkThemeOn()) {
-    // switch app to dark mode
+    // switch sh to dark mode
 }
 ```
 
