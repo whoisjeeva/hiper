@@ -1,6 +1,12 @@
-[![](https://jitpack.io/v/okbash/hiper.svg)](https://jitpack.io/#okbash/hiper)
-[![Build Status](https://travis-ci.com/okbash/hiper.svg?branch=master)](https://travis-ci.com/okbash/hiper)
-[![License](https://img.shields.io/github/license/okbash/hiper.svg)](https://github.com/okbash/hiper/blob/master/LICENSE)
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/11387981/121815650-281b4000-cc95-11eb-96ca-c190ded683d3.png" alt="Hiper">
+</p>
+
+<p align="center">
+    <a href="https://jitpack.io/#okbash/hiper" target="_blank"><img src="https://jitpack.io/v/okbash/hiper.svg" alt="Release"></a>
+    <a href="https://travis-ci.com/okbash/hiper" target="_blank"><img src="https://travis-ci.com/okbash/hiper.svg?branch=master" alt="Build Status"></a>
+    <a href="https://github.com/okbash/hiper/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/okbash/hiper.svg" alt="License"></a>
+</p>
 
 # Hiper - A Human Friendly HTTP Library for Android
 
