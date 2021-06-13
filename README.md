@@ -22,13 +22,13 @@ allprojects {
 Add the dependency
 
 ```css
-implementation "com.github.anyms.hiper:http:$hiper_version"
+implementation "com.github.okbash.hiper:http:$hiper_version"
 ```
 
 For utils
 
 ```css
-implementation "com.github.anyms.hiper:util:$hiper_version"
+implementation "com.github.okbash.hiper:util:$hiper_version"
 ```
 
 
@@ -133,7 +133,7 @@ Check if dark mode is enabled
 
 ```kotlin
 if (isDarkThemeOn()) {
-    // switch app to dark mode
+    // switch sh to dark mode
 }
 ```
 
