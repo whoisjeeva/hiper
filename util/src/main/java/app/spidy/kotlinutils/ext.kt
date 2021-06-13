@@ -3,6 +3,7 @@ package app.spidy.kotlinutils
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import kotlinx.coroutines.*
 import java.io.BufferedReader
@@ -140,4 +141,17 @@ fun fetch(url: String, callback: BufferedReader.() -> Unit) {
 
 fun Context.newDialog(): Dialog {
     return Dialog(this)
+}
+
+
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
 }
