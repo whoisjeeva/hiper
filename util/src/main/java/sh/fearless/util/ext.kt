@@ -61,7 +61,7 @@ fun info(vararg o: Any?) {
 
 
 fun onUiThread(callback: () -> Unit) {
-    GlobalScope.launch(Dispatchers.Main) {
+    CoroutineScope(Dispatchers.Main).launch {
         callback()
     }
 }
@@ -71,7 +71,7 @@ suspend fun sleep(millis: Long) {
 }
 
 fun async(block: suspend CoroutineScope.() -> Unit) {
-    GlobalScope.launch(Dispatchers.IO) {
+    CoroutineScope(Dispatchers.IO).launch {
         block.invoke(this)
     }
 }
@@ -80,6 +80,7 @@ fun CoroutineScope.run(block: () -> Unit) {
     block()
 }
 
+@Deprecated(message = "It does not works in some cases", replaceWith = ReplaceWith(""), level = DeprecationLevel.WARNING)
 fun ignore(callback: Exception?.() -> Unit) {
     try {
         callback(null)
