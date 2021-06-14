@@ -19,27 +19,17 @@ class MainActivity : AppCompatActivity() {
         val weeDB = WeeDB(applicationContext)
         val jeeva = Person(name = "Jeeva", age = 26)
         val siva = Person(name = "siva", age = 12)
+        val anyms = Person(name = "anyms", age = 26)
 
         weeDB.remove("persons")
-        val persons = if ("persons" !in weeDB) {
-            val persons = weeDB.newList("persons")
-            persons.add(jeeva, siva)
-            persons
-        } else {
-            weeDB.getList("persons")
-        }
+        val persons = weeDB.newList("persons", Person::class.java)
+        persons.add(jeeva, siva)
 
-        if (Person("siva", 12) in persons!!) {
-            debug("HAS! HAS!")
-        } else {
-            debug("NO! NO!")
-        }
-        val s1 = weeDB.turnValue(Person("siva", 43))
-        val s2 = persons[0]
-        debug(s1.length)
-        debug(s2.length)
-        debug(persons.get(0, Person::class.java))
-        debug(persons.size)
+
+
+        debug(persons[0])
+        debug("Is contains Jeeva?", jeeva in persons)
+        debug("Is contains Anyms?", anyms in persons)
     }
 
 
