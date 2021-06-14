@@ -193,9 +193,6 @@ open class WeeDB(context: Context) {
      * Return WeeList with Any datatype.
      */
     fun newList(key: String): WeeList {
-        if (key in this) {
-            return getList(key)!!
-        }
         preferences.edit().apply {
             putString(key, "")
             apply()
@@ -207,9 +204,6 @@ open class WeeDB(context: Context) {
      * Return TypedList with given datatype.
      */
     fun <T> newList(key: String, clazz: Class<T>): TypedList<T> {
-        if (key in this) {
-            return getList(key, clazz)!!
-        }
         preferences.edit().apply {
             putString(key, "")
             apply()
@@ -221,9 +215,6 @@ open class WeeDB(context: Context) {
      * Return parcelable version of ParcelableList with given datatype.
      */
     fun <T: Parcelable> newList(key: String, clazz: Class<T>): ParcelableList<T> {
-        if (key in this) {
-            return getList(key, clazz)!!
-        }
         preferences.edit().apply {
             putString(key, "")
             apply()
@@ -362,6 +353,11 @@ open class WeeDB(context: Context) {
             return ref.contains(turnValue(element))
         }
 
+        operator fun plusAssign(arr: Iterable<Any>) {
+            for (v in arr) ref.add(turnValue(v))
+            commitChanges()
+        }
+
         val size: Int
             get() = ref.size
         val lastIndex: Int
@@ -390,6 +386,17 @@ open class WeeDB(context: Context) {
 
         fun remove(vararg args: Any) {
             for (v in args) ref.remove(turnValue(v))
+            commitChanges()
+        }
+
+        fun removeAt(i: Int) {
+            ref.removeAt(i)
+            commitChanges()
+        }
+
+        fun updateAt(i: Int, newValue: Any) {
+            ref.removeAt(i)
+            ref.add(i, turnValue(newValue))
             commitChanges()
         }
 
@@ -461,6 +468,11 @@ open class WeeDB(context: Context) {
             return ref.contains(turnValue(element as Any))
         }
 
+        operator fun plusAssign(arr: Iterable<T>) {
+            for (v in arr) ref.add(turnValue(v as Any))
+            commitChanges()
+        }
+
         val size: Int
             get() = ref.size
         val lastIndex: Int
@@ -494,6 +506,17 @@ open class WeeDB(context: Context) {
             commitChanges()
         }
 
+        fun removeAt(i: Int) {
+            ref.removeAt(i)
+            commitChanges()
+        }
+
+        fun updateAt(i: Int, newValue: T) {
+            ref.removeAt(i)
+            ref.add(i, turnValue(newValue as Any))
+            commitChanges()
+        }
+
         operator fun get(index: Int): T {
             return turnBackValue("", clazz, ref[index])
         }
@@ -504,7 +527,7 @@ open class WeeDB(context: Context) {
      * Whenever you loop through TypedList you will get back the given datatype
      */
 
-    inner class TypedList<T>(private val key: String, private val list: List<String>, private val clazz: Class<T>): Iterable<T> {
+    inner class TypedList<T>(private val key: String, private val list: Iterable<String>, private val clazz: Class<T>): Iterable<T> {
         private val ref = list.toMutableList()
 
         override fun toString(): String {
@@ -533,6 +556,11 @@ open class WeeDB(context: Context) {
             return ref.contains(turnValue(element as Any))
         }
 
+        operator fun plusAssign(arr: Iterable<T>) {
+            for (v in arr) ref.add(turnValue(v as Any))
+            commitChanges()
+        }
+
         val size: Int
             get() = ref.size
         val lastIndex: Int
@@ -563,6 +591,17 @@ open class WeeDB(context: Context) {
 
         fun remove(vararg args: T) {
             for (v in args) ref.remove(turnValue(v as Any))
+            commitChanges()
+        }
+
+        fun removeAt(i: Int) {
+            ref.removeAt(i)
+            commitChanges()
+        }
+
+        fun updateAt(i: Int, newValue: T) {
+            ref.removeAt(i)
+            ref.add(i, turnValue(newValue as Any))
             commitChanges()
         }
 

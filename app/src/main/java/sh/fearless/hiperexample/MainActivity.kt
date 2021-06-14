@@ -17,21 +17,20 @@ class MainActivity : AppCompatActivity() {
 
         val imgView: ImageView = findViewById(R.id.imgView)
         val wee = WeeDB(applicationContext)
-        val jeeva = Person(name = "Jeeva", age = 26)
-        val siva = Person(name = "siva", age = 12)
-        val anyms = Person(name = "anyms", age = 26)
+        val persons = listOf(
+            Person("Jeeva", 26),
+            Person("Senkathir", 15),
+            Person("Theepan", 31),
+            Person("Jeevitha", 28),
+        )
+        val data = wee.newList("data", Person::class.java)
+        data += persons
 
-        wee.remove("persons")
-        val persons = wee.newList("persons", Person::class.java)
-        persons.add(jeeva, siva)
+        data.updateAt(1, Person(name = "Kumar", age = 75))
 
-
-
-        debug(persons[0])
-        debug("Is contains Jeeva?", jeeva in persons)
-        debug("Is contains Anyms?", anyms in persons)
-
-        debug(persons[0])
+        for (d in data) {
+            debug(d)
+        }
     }
 
 
