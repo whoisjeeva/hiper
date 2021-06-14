@@ -109,7 +109,7 @@ open class WeeDB(context: Context) {
     /**
      * Return stored parcelable value as type T from WeeDB, if it doesn't exist throws and exception.
      */
-    fun <T : Parcelable?> get(key: String, clazz: Class<T>): T {
+    fun <T : Parcelable?> get(key: String, clazz: Class<T>): T? {
         return turnBackValue(key, clazz)
     }
 
@@ -313,7 +313,7 @@ open class WeeDB(context: Context) {
      * Turn back to given parcelable datatype from String, if value doesn't provided then get the value using
      * the key from sharedpreferences.
      */
-    private fun <T: Parcelable?> turnBackValue(k: String, clazz: Class<T>, value: String? = null): T {
+    private fun <T: Parcelable?> turnBackValue(k: String, clazz: Class<T>, value: String? = null): T? {
         val v = value
             ?: (preferences.getString(k, null) ?: throw Exception("No value exist for key '$k'"))
         val bytes = Base64.decode(v, Base64.DEFAULT)
@@ -322,7 +322,7 @@ open class WeeDB(context: Context) {
         parcel.setDataPosition(0)
         val bundle = parcel.readBundle(clazz.classLoader)
         parcel.recycle()
-        return bundle!!.getParcelable<T>("__o__")!!
+        return bundle?.getParcelable<T>("__o__")
     }
 
 
@@ -404,7 +404,7 @@ open class WeeDB(context: Context) {
             return ref[index]
         }
 
-        fun <T : Parcelable?> get(i: Int, clazz: Class<T>): T {
+        fun <T : Parcelable?> get(i: Int, clazz: Class<T>): T? {
             return turnBackValue("", clazz, get(i))
         }
 
@@ -448,12 +448,16 @@ open class WeeDB(context: Context) {
 
         override operator fun iterator(): Iterator<T> {
             val mod = mutableListOf<T>()
-            for (r in ref) mod.add(turnBackValue("", clazz, r))
+            for (r in ref) {
+                turnBackValue("", clazz, r)?.also { mod.add(it) }
+            }
             return mod.iterator()
         }
 
         fun forEach(iterator: (T) -> Unit) {
-            for (r in ref) iterator(turnBackValue("", clazz, r))
+            for (r in ref) {
+                turnBackValue("", clazz, r)?.also(iterator)
+            }
         }
 
         private fun commitChanges() {
@@ -517,7 +521,7 @@ open class WeeDB(context: Context) {
             commitChanges()
         }
 
-        operator fun get(index: Int): T {
+        operator fun get(index: Int): T? {
             return turnBackValue("", clazz, ref[index])
         }
     }
