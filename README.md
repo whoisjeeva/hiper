@@ -15,6 +15,12 @@
 
 > Hiper is for human by human.
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Using The HTTP Library](#using-the-http-library)
+- [Using The Utils Library](#using-the-utils-library)
+
 ## Getting Started
 
 Add it in your root build.gradle at the end of repositories
@@ -41,11 +47,98 @@ implementation "com.github.okbash.hiper:util:$hiper_version"
 ```
 
 
-## Using utils
+## Using The HTTP Library
 
-The utils library contains few useful method that makes your android development little bit easier.
+Create a hiper instance. You can use the Hiper in two different ways.
 
-**Context.toast(o: Any?, isLong: Boolean = false)**
+1. Synchronous: This will wait for the response, this will block whatever thread it is running on.
+2. Asynchronous: This won't wait or block the running thread, instead you pass callbacks and it will execute those callbacks when it succeed or fail.
+
+```kotlin
+val hiper = Hiper.getInstance() // for synchronous requests
+// or
+val hiper = Hiper.getInstance().async() // for asynchronous requests
+```
+
+> Now you are ready to see the power of hiper.
+
+Sending a simple GET request
+
+```kotlin
+val caller = hiper.get("http://httpbin.org/get")
+    .resolve { response -> }
+    .reject { response -> }
+    .catch { exception -> }
+caller.execute()
+```
+
+Sending a simple POST request
+
+```kotlin
+val caller = hiper.post("http://httpbin.org/post")
+    .resolve { response -> }
+    .reject { response -> }
+    .catch { exception -> }
+caller.execute()
+```
+
+Sending GET parameters with your request
+
+```kotlin
+val args = Headers(
+    "name" to "Hiper",
+    "age" to 1
+)
+val caller = hiper.get("http://httpbin.org/get", args = args)
+    .resolve { response -> }
+    .reject { response -> }
+    .catch { exception -> }
+caller.execute()
+```
+
+Or you can use inline args, headers, cookies or form using the `mix` method
+
+```kotlin
+hiper.get("http://httpbin.org/get", args = mix("name" to "Hiper"), headers = mix("user-agent" to "Hiper/1.0").execute()
+```
+
+Using custom headers
+
+```kotlin
+val headers = Headers(
+    "User-Agent" to "Hiper/1.1"
+)
+val caller = hiper.get("http://httpbin.org/get", headers = headers)
+    .resolve { response -> }
+    .reject { response -> }
+    .catch { exception -> }
+caller.execute()
+```
+
+Downloading a file using Hiper.
+
+```kotlin
+val caller = hiper.get("http://httpbin.org/get", isStream = true)
+    .reject { response -> }
+    .resolve { response ->
+        // use the stream
+        val stream = response.stream
+        ...
+
+        // remember to close the stream
+        stream.close()
+    }
+    .catch { exception -> }
+caller.execute()
+```
+
+
+
+## Using The Utils Library
+
+The utils library contains few useful method that will makes your android development little bit easier.
+
+### `Context.toast(o: Any?, isLong: Boolean = false)`
 
 Showing a toast message is easier with this extension method.
 
@@ -59,9 +152,9 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-**debug(o: Any?)**, **error(o: Any?)**, **warn(o: Any?)**, **info(o: Any?)**
+### `debug(vararg args: Any?)`, `error(vararg args: Any?)`, `warn(vararg args: Any?)`, `info(vararg args: Any?)`
 
-When you debug your application you use the `Log.d` a lot, it require a TAG and a string as value. With the `debug` method you can pass any value and it will use the class name wherever it called from as TAG (with the .kt extension).
+When we debug our application we use the `Log.d` a lot, it requires a TAG and a `String` as value. With the `debug` method we can pass any value and it will use the class name wherever it called from as TAG (with .kt extension).
 
 
 ```kotlin
@@ -69,9 +162,9 @@ val person = Person()
 debug(person)
 ```
 
-**onUiThread(callback: () -> Unit)**
+### `onUiThread(callback: () -> Unit)`
 
-Switch to UI thread even without the `Activity`
+Switch to UI thread even without an `Activity`. It uses coroutines to run your code in the UI thread.
 
 ```kotlin
 class MyService: Service() {
@@ -87,9 +180,9 @@ class MyService: Service() {
 }
 ```
 
-**async(block: suspend CoroutineScope.() -> Unit)**
+### `async(block: suspend CoroutineScope.() -> Unit)`
 
-Launch a coroutine using `Dispatchers.IO`
+Launch a coroutine using the `Dispatchers.IO`
 
 ```kotlin
 async {
@@ -98,9 +191,9 @@ async {
 ```
 
 
-**sleep(millis: Long)**
+### `sleep(millis: Long)`
 
-Suspend `async` for specified milliseconds.
+Suspend `async` for specified milliseconds. Only valid inside a coroutine scope.
 
 ```kotlin
 async {
@@ -109,7 +202,7 @@ async {
 }
 ```
 
-**CoroutineScope.run(block: () -> Unit)**
+### `CoroutineScope.run(block: () -> Unit)`
 
 Run blocking code inside `async`
 
@@ -122,11 +215,11 @@ async {
 }
 ```
 
-**ignore(callback: Exception?.() -> Unit)**
+### :warning: `@Deprecated ignore(callback: Exception?.() -> Unit)`
 
 If you are tired of writing `try {} catch(e: Exception) {}` to ignore exception.
 
-**Note**: Use it with caution can trip you off.
+> **WARNING**: It does not works in some cases
 
 ```kotlin
 ignore {
@@ -136,9 +229,9 @@ ignore {
 ```
 
 
-**Context.isDarkThemeOn(): Boolean**
+### `Context.isDarkThemeOn(): Boolean`
 
-Check if dark mode is enabled
+Check if the system dark mode is enabled
 
 ```kotlin
 if (isDarkThemeOn()) {
@@ -146,7 +239,7 @@ if (isDarkThemeOn()) {
 }
 ```
 
-**Context.readFile(dir: String, fileName: String): ByteArray**
+### `Context.readFile(dir: String, fileName: String): ByteArray`
 
 Read a file from `getExternalFilesDir`
 
@@ -155,7 +248,7 @@ val data: ByteArray = readFile(Environment.DIRECTORY_DOWNLOADS, "test.txt")
 ```
 
 
-**Context.readFromRawFolder(path: String): ByteArray**
+### `Context.readFromRawFolder(path: String): ByteArray`
 
 Read a file from `raw` folder
 
@@ -164,9 +257,9 @@ Read a file from `raw` folder
 val data: ByteArray = readFromRawFolder("test")
 ```
 
-**fetch(url: String, callback: BufferedReader.() -> Unit)**
+### `fetch(url: String, callback: BufferedReader.() -> Unit)`
 
-Send a GET http request
+Send a simple GET http request
 
 ```kotlin
 fetch("https://httpbin.org/ip") { reader ->
@@ -174,9 +267,9 @@ fetch("https://httpbin.org/ip") { reader ->
 }
 ```
 
-**Context.newDialog(): Dialog**
+### `Context.newDialog(): Dialog`
 
-Creating an `AlertDialog` is easier with it.
+Creating a `MaterialAlertDialog` is easier with it.
 
 ```kotlin
 newDialog().withTitle("Hello, World")
@@ -189,10 +282,39 @@ newDialog().withTitle("Hello, World")
     .show()
 ```
 
+### `View.visible()`
 
-**TinyDB**
+Set a `View` visibility to `View.VISIBLE`
+
+```kotlin
+val button: Button = findViewById(R.id.button)
+button.visible()
+```
+
+### `View.invisible()`
+
+Set a `View` visibility to `View.INVISIBLE`
+
+```kotlin
+val button: Button = findViewById(R.id.button)
+button.invisible()
+```
+
+### `View.gone()`
+
+Set a `View` visibility to `View.GONE`
+
+```kotlin
+val button: Button = findViewById(R.id.button)
+button.gone()
+```
+
+
+### :warning: `@Deprecated TinyDB(appContext: Context)`
 
 The utils library also contains `TinyDB` that allows you to persist some simple data.
+
+> **WARNING**: TinyDB is deprecated, there is a better version of TinyDB available as WeeDB
 
 ```kotlin
 val tinyDB = TinyDB(applicationContext)
@@ -200,71 +322,105 @@ tinyDB.putString("KEY", "hello")
 debug(tinyDB.getString("KEY"))
 ```
 
+### `WeeDB(appContext: Context)`
 
-## Using HTTP
-
-Create a hiper instance.
+Creating a `WeeDB` instance.
 
 ```kotlin
-val hiper = Hiper.getInstance() // for synchronous requests
-// or
-val hiper = Hiper.getInstance().async() // for asynchronous requests
+val wee = WeeDB(applicationContext)
 ```
 
-Now you are ready to see the power of hiper.
+Storing and retrieving primitive data type.
 
 ```kotlin
-// simple GET request
-hiper.get("http://httpbin.org/get")
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
+wee.put("age", 26)
+debug(wee.getInt("age"))
 
-// simple POST request
-hiper.post("http://httpbin.org/post")
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
-
-// sending parameters with your request
-val args = Headers(
-    "name" to "Hiper",
-    "age" to 1
-)
-hiper.get("http://httpbin.org/get", args = args)
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
-
-// or you can use inline args, headers, cookies or form using the mix method
-
-hiper.get("http://httpbin.org/get", args = mix("name" to "Hiper"), headers = mix("user-agent" to "Hiper/1.0")
-
-// custom headers
-val headers = Headers(
-    "User-Agent" to "Hiper/1.1"
-)
-hiper.get("http://httpbin.org/get", headers = headers)
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
+wee.put("name", "Jeeva")
+debug(wee.getString("name"))
 ```
 
-Download binary files
+Storing a `List` that contains `Any` datatype. In this case `wee.getList` returns `WeeList`. Which is a dynamic list that can store any type data. but when you directly access the data you will get back the `String` version of the data. Because `WeeDB` stores everything as a `String`. In order to get a data with a specific datatype, you need to call an appropriate get method.
 
 ```kotlin
-hiper.get("http://httpbin.org/get", isStream = true)
-    .reject { response -> }
-    .resolve { response ->
-        // use the stream
-        val stream = response.stream
-        ...
-
-        // remember to close the stream
-        stream.close()
-    }
-    .catch { exception -> }
+wee.put("names", listOf("Jeeva", "Fearless", 5, true))
+val names = wee.getList("names")
+debug(names[2]) // "5"
+debug(names.getInt(2)) // 5
 ```
 
 
-**Note**: Do not forget to call the `.catch {}` at the end of every request. The `.catch {}` block is the setup of your HTTP request, and actually that's what trigger the HTTP request.
+Storing a specific type `List`.
+
+```kotlin
+val scores = wee.newList("scores", Int::class.java)
+scores.add(40)
+scores.add(72)
+scores.add(35)
+scores.add(98)
+debug(scores[0]+1) // 41
+```
+
+Storing a `Parcelable` data. Add the `kotlin-parcelize` plugin.
+
+```gradle
+// app build.gradle
+plugins {
+    ..
+    id 'kotlin-parcelize'
+}
+```
+
+```kotlin
+@Parcelize
+data class Person(val name: String, val age: String): Parcelable
+
+wee.put("jeeva", Person("Jeeva", 26))
+debug(wee.get("jeeva", Person::class.java).name)
+```
+
+Working with `Parcelable` list.
+
+```kotlin
+val jeeva = Person(name = "Jeeva", age = 26)
+val senkathir = Person(name = "Senkathir", age = 15)
+
+val persons = wee.newList("persons", Person::class.java)
+persons.add(jeeva)
+persons.add(senkathir)
+
+debug(persons[0].name) // Jeeva
+```
+
+Looping through `WeeDB` list.
+
+```kotlin
+val persons = wee.newList("persons", Person::class.java)
+persons.add(jeeva, senkathir)
+
+for (person in persons) {
+    debug(person.name)
+}
+```
+
+Check if a key exists in `WeeDB`.
+
+```kotlin
+wee.put("person", Person(name = "Jeeva", age = 26))
+if ("person" in wee) {
+    // ...
+}
+```
+
+Check if a value exists in `WeeDB` list.
+
+> **NOTE**: Only works in a `WeeDB` list
+
+```kotlin
+val persons = wee.newList("persons", Person::class.java)
+persons.add(jeeva, senkathir)
+
+if (Person(name = "Jeeva", age = 26) in persons) {
+    // ...
+}
+```

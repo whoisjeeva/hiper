@@ -42,7 +42,7 @@ class HiperTest: TestCase() {
             status = 1
         }.catch {
             status = 1
-        }
+        }.execute()
         while (status==0) delay(100)
         Log.d(tag, response.toString())
 
@@ -65,7 +65,7 @@ class HiperTest: TestCase() {
             status = 1
         }.catch {
             status = 1
-        }
+        }.execute()
         while (status==0) delay(100)
         Log.d(tag, response.toString())
 
@@ -88,7 +88,7 @@ class HiperTest: TestCase() {
             status = 1
         }.catch {
             status = 1
-        }
+        }.execute()
         while (status==0) delay(100)
         Log.d(tag, response.toString())
 
@@ -112,7 +112,7 @@ class HiperTest: TestCase() {
             status = 1
         }.catch {
             status = 1
-        }
+        }.execute()
         while (status==0) delay(100)
         Log.d(tag, response.toString())
 

@@ -16,13 +16,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val imgView: ImageView = findViewById(R.id.imgView)
-        val weeDB = WeeDB(applicationContext)
+        val wee = WeeDB(applicationContext)
         val jeeva = Person(name = "Jeeva", age = 26)
         val siva = Person(name = "siva", age = 12)
         val anyms = Person(name = "anyms", age = 26)
 
-        weeDB.remove("persons")
-        val persons = weeDB.newList("persons", Person::class.java)
+        wee.remove("persons")
+        val persons = wee.newList("persons", Person::class.java)
         persons.add(jeeva, siva)
 
 
@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         debug(persons[0])
         debug("Is contains Jeeva?", jeeva in persons)
         debug("Is contains Anyms?", anyms in persons)
+
+        debug(persons[0])
     }
 
 
