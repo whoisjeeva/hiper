@@ -20,6 +20,23 @@
 - [Getting Started](#getting-started)
 - [Using The HTTP Library](#using-the-http-library)
 - [Using The Utils Library](#using-the-utils-library)
+    - [Context.toast(o: Any?, isLong: Boolean = false)](#contexttoasto-any-islong-boolean--false)
+    - [debug(vararg args: Any?)](#debugvararg-args-any-errorvararg-args-any-warnvararg-args-any-infovararg-args-any) also `error(vararg args: Any?)`, `warn(vararg args: Any?)`, `info(vararg args: Any?)`
+    - [onUiThread(callback: () -> Unit)](#onuithreadcallback----unit)
+    - [async(block: suspend CoroutineScope.() -> Unit)](#asyncblock-suspend-coroutinescope---unit)
+    - [sleep(millis: Long)](#sleepmillis-long)
+    - [CoroutineScope.run(block: () -> Unit)](#coroutinescoperunblock----unit)
+    - :warning: @Deprecated [ignore(callback: Exception?.() -> Unit)](#contextisdarkthemeon-boolean)
+    - [Context.isDarkThemeOn(): Boolean](#contextisdarkthemeon-boolean)
+    - [Context.readFile(dir: String, fileName: String): ByteArray](#contextreadfiledir-string-filename-string-bytearray)
+    - [Context.readFromRawFolder(path: String): ByteArray](#contextreadfromrawfolderpath-string-bytearray)
+    - [fetch(url: String, callback: BufferedReader.() -> Unit)](#fetchurl-string-callback-bufferedreader---unit)
+    - [Context.newDialog(): Dialog](#contextnewdialog-dialog)
+    - [View.visible()](#viewvisible)
+    - [View.invisible()](#viewinvisible)
+    - [View.gone()](#viewgone)
+    - :warning: @Deprecated [TinyDB(appContext: Context)](#warning-deprecated-tinydbappcontext-context)
+    - [WeeDB(appContext: Context)](#weedbappcontext-context)
 
 ## Getting Started
 
