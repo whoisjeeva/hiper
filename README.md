@@ -66,7 +66,7 @@ implementation "com.github.okbash.hiper:util:$hiper_version"
 
 ## Using The HTTP Library
 
-Create a hiper instance. You can use the Hiper in two different ways.
+### Create a hiper instance. You can use the Hiper in two different ways.
 
 1. Synchronous: This will wait for the response, this will block whatever thread it is running on.
 2. Asynchronous: This won't wait or block the running thread, instead you pass callbacks and it will execute those callbacks when it succeed or fail.
@@ -79,7 +79,7 @@ val hiper = Hiper.getInstance().async() // for asynchronous requests
 
 > Now you are ready to see the power of hiper.
 
-Sending a simple GET request
+### Sending a simple GET request
 
 ```kotlin
 val caller = hiper.get("http://httpbin.org/get")
@@ -89,7 +89,7 @@ val caller = hiper.get("http://httpbin.org/get")
 caller.execute()
 ```
 
-Sending a simple POST request
+### Sending a simple POST request
 
 ```kotlin
 val caller = hiper.post("http://httpbin.org/post")
@@ -99,7 +99,7 @@ val caller = hiper.post("http://httpbin.org/post")
 caller.execute()
 ```
 
-Sending GET parameters with your request
+### Sending GET parameters with your request
 
 ```kotlin
 val args = Headers(
@@ -119,7 +119,7 @@ Or you can use inline args, headers, cookies or form using the `mix` method
 hiper.get("http://httpbin.org/get", args = mix("name" to "Hiper"), headers = mix("user-agent" to "Hiper/1.0").execute()
 ```
 
-Using custom headers
+### Using custom headers
 
 ```kotlin
 val headers = Headers(
@@ -132,7 +132,7 @@ val caller = hiper.get("http://httpbin.org/get", headers = headers)
 caller.execute()
 ```
 
-Downloading a file using Hiper.
+### Downloading a file using Hiper.
 
 ```kotlin
 val caller = hiper.get("http://httpbin.org/get", isStream = true)
