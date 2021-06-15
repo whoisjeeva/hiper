@@ -19,6 +19,12 @@
 
 - [Getting Started](#getting-started)
 - [Using The HTTP Library](#using-the-http-library)
+    - [Creating an instance](#create-a-hiper-instance-you-can-use-the-hiper-in-two-different-ways)
+    - [GET request](#sending-a-simple-get-request)
+    - [POST request](#sending-a-simple-post-request)
+    - [GET request with parameters](#sending-get-parameters-with-your-request)
+    - [Sending custom headers](#using-custom-headers)
+    - [Downloading files](#downloading-a-file-using-hiper)
 - [Using The Utils Library](#using-the-utils-library)
     - [Context.toast(o: Any?, isLong: Boolean = false)](#contexttoasto-any-islong-boolean--false)
     - [debug(vararg args: Any?)](#debugvararg-args-any-errorvararg-args-any-warnvararg-args-any-infovararg-args-any) also `error(vararg args: Any?)`, `warn(vararg args: Any?)`, `info(vararg args: Any?)`
