@@ -1,6 +1,7 @@
 package sh.fearless.util
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -12,8 +13,15 @@ import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
 
-open class WeeDB(context: Context) {
-    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+open class WeeDB(appContext: Context) {
+    private val preferences = PreferenceManager.getDefaultSharedPreferences(appContext)
+
+    /**
+     * Clear all data from WeeDB
+     */
+    fun clearAll(): Boolean {
+        return preferences.edit().clear().commit()
+    }
 
     /**
      * Insert Any value into WeeDB as a String.

@@ -17,16 +17,24 @@ class MainActivity : AppCompatActivity() {
 
         val imgView: ImageView = findViewById(R.id.imgView)
         val wee = WeeDB(applicationContext)
-        val persons = listOf(
-            Person("Jeeva", 26),
-            Person("Senkathir", 15),
-            Person("Theepan", 31),
-            Person("Jeevitha", 28),
-        )
-        val data = wee.newList("data", Person::class.java)
-        data += persons
 
-        data.updateAt(1, Person(name = "Kumar", age = 75))
+        val data: WeeDB.ParcelableList<Person>
+        if ("data" !in wee) {
+            debug("Data not Exists")
+            val persons = listOf(
+                Person("Jeeva", 26),
+                Person("Senkathir", 15),
+                Person("Theepan", 31),
+                Person("Jeevitha", 28),
+            )
+            data = wee.newList("data", Person::class.java)
+            data += persons
+        } else {
+            debug("Data Exists")
+            data = wee.getList("data", Person::class.java)!!
+        }
+
+//        wee.clearAll()
 
         for (d in data) {
             debug(d)
