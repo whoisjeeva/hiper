@@ -9,6 +9,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import org.riversun.okhttp3.OkHttp3CookieHelper
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -23,6 +24,7 @@ class PostRequest(
     private val args: HashMap<String, Any>,
     private val form: HashMap<String, Any>,
     private val files: List<File>,
+    private val json: JSONObject?,
     private val headers: HashMap<String, Any>,
     private val cookies: HashMap<String, Any>,
     private val username: String?,
@@ -34,15 +36,26 @@ class PostRequest(
     private fun build(): Request {
         val urlBuilder = url.toHttpUrlOrNull()?.newBuilder() ?: throw Exception("UrlBuilder returns null")
         val cookieManager = OkHttp3CookieHelper()
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
+        var requestBody: MultipartBody.Builder? = null
+        var jsonRequestBody: RequestBody? = null
 
-        for ((k, v) in form) {
-            requestBody.addFormDataPart(k, v.toString())
-        }
+        if (json != null) {
+            jsonRequestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        } else {
+            requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
 
-        for (file in files) {
-            requestBody.addFormDataPart("file", file.name, file.asRequestBody("application/octet-stream".toMediaTypeOrNull()))
+            for ((k, v) in form) {
+                requestBody.addFormDataPart(k, v.toString())
+            }
+
+            for (file in files) {
+                requestBody.addFormDataPart(
+                    "file",
+                    file.name,
+                    file.asRequestBody("application/octet-stream".toMediaTypeOrNull())
+                )
+            }
         }
 
         val request = Request.Builder()
@@ -63,10 +76,14 @@ class PostRequest(
             localClient.writeTimeout(timeout, TimeUnit.SECONDS)
         }
         client = localClient.build()
-        if (files.isEmpty() && form.isEmpty()) {
+        if (files.isEmpty() && form.isEmpty() && json == null) {
             return request.url(urlBuilder.build().toString()).post("".toRequestBody()).build()
         }
-        return request.url(urlBuilder.build().toString()).post(requestBody.build()).build()
+        if (requestBody != null) {
+            return request.url(urlBuilder.build().toString()).post(requestBody.build()).build()
+        } else {
+            return request.url(urlBuilder.build().toString()).post(jsonRequestBody!!).build()
+        }
     }
 
     fun sync(): HiperResponse {
