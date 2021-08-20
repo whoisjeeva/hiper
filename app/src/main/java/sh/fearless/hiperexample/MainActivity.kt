@@ -4,6 +4,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONObject
+import sh.fearless.hiper.Hiper
 import sh.fearless.kookaburra.controllers.PermissionHandler
 import sh.fearless.util.WeeDB
 import sh.fearless.util.debug
@@ -15,21 +17,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val imgView: ImageView = findViewById(R.id.imgView)
-        val wee = WeeDB(applicationContext)
-        val persons = listOf(
-            Person("Jeeva", 26),
-            Person("Senkathir", 15),
-            Person("Theepan", 31),
-            Person("Jeevitha", 28),
-        )
-        val data = wee.newList("data", Person::class.java)
-        data += persons
-
-        data.updateAt(1, Person(name = "Kumar", age = 75))
-
-        for (d in data) {
-            debug(d)
+        val hiper = Hiper.getInstance().async()
+        hiper.head(url = "https://httpbin.org/get") {
+            debug(this)
         }
     }
 

@@ -1,5 +1,6 @@
 package sh.fearless.hiper
 
+import android.util.Log
 import sh.fearless.hiper.controllers.Caller
 import sh.fearless.hiper.data.Headers
 import sh.fearless.hiper.data.HiperResponse
@@ -67,7 +68,7 @@ class GetRequest(
         return HiperResponse(
             isRedirect = response.isRedirect,
             statusCode = response.code,
-            message = response.message,
+            statusMessage = response.message,
             text = text,
             content = bytes,
             stream = stream,
@@ -76,12 +77,12 @@ class GetRequest(
         )
     }
 
-    fun async(listener: Listener): Caller {
+    fun async(callback: (HiperResponse.() -> Unit)? = null): Caller {
         val request = build()
         val call = client.newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                listener.onFail(e)
+                callback?.invoke(HiperResponse(error = e))
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -95,19 +96,19 @@ class GetRequest(
                     text = String(bytes)
                 }
 
-                for ((k, v) in response.headers) headers.put(k, v)
+                for ((k, v) in response.headers) headers[k] = v
 
                 val hiperResponse = HiperResponse(
                     isRedirect = response.isRedirect,
                     statusCode = response.code,
-                    message = response.message,
+                    statusMessage = response.message,
                     text = text,
                     content = bytes,
                     stream = stream,
                     headers = headers,
                     isSuccessful = response.isSuccessful
                 )
-                listener.onSuccess(hiperResponse)
+                callback?.invoke(hiperResponse)
             }
         })
 

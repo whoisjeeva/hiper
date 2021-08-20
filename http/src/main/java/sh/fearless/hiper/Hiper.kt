@@ -1,5 +1,7 @@
 package sh.fearless.hiper
 
+import org.json.JSONObject
+import sh.fearless.hiper.controllers.Caller
 import sh.fearless.hiper.data.HiperResponse
 import java.io.File
 
@@ -25,13 +27,14 @@ class Hiper {
         args: HashMap<String, Any> = hashMapOf(),
         form: HashMap<String, Any> = hashMapOf(),
         files: List<File> = listOf(),
+        json: JSONObject? = null,
         headers: HashMap<String, Any> = hashMapOf(),
         cookies: HashMap<String, Any> = hashMapOf(),
         username: String? = null,
         password: String? = null,
         timeout: Long? = null
     ): HiperResponse {
-        return PostRequest(url, isStream, byteSize, args=args, form=form, files=files, headers=headers,
+        return PostRequest(url, isStream, byteSize, args=args, form=form, files=files, json=json, headers=headers,
             cookies=cookies, username=username, password = password, timeout = timeout).sync()
     }
 
@@ -61,11 +64,12 @@ class Hiper {
             cookies: HashMap<String, Any> = hashMapOf(),
             username: String? = null,
             password: String? = null,
-            timeout: Long? = null
-        ): Queue {
+            timeout: Long? = null,
+            callback: (HiperResponse.() -> Unit)? = null
+        ): Caller {
             val req = GetRequest(url, isStream, byteSize, args=args, headers=headers, cookies=cookies,
                 username = username, password = password, timeout=timeout)
-            return Queue { req.async(it) }
+            return req.async(callback)
         }
 
         fun post(
@@ -73,15 +77,17 @@ class Hiper {
             args: HashMap<String, Any> = hashMapOf(),
             form: HashMap<String, Any> = hashMapOf(),
             files: List<File> = listOf(),
+            json: JSONObject? = null,
             headers: HashMap<String, Any> = hashMapOf(),
             cookies: HashMap<String, Any> = hashMapOf(),
             username: String? = null,
             password: String? = null,
-            timeout: Long? = null
-        ): Queue {
-            val req = PostRequest(url, isStream, byteSize, args=args, form=form, files=files,
+            timeout: Long? = null,
+            callback: (HiperResponse.() -> Unit)? = null
+        ): Caller {
+            val req = PostRequest(url, isStream, byteSize, args=args, form=form, files=files, json=json,
                 headers=headers, cookies=cookies, username=username, password=password, timeout = timeout)
-            return Queue { req.async(it) }
+            return req.async(callback)
         }
 
         fun head(
@@ -91,11 +97,12 @@ class Hiper {
             cookies: HashMap<String, Any> = hashMapOf(),
             username: String? = null,
             password: String? = null,
-            timeout: Long? = null
-        ): Queue {
+            timeout: Long? = null,
+            callback: (HiperResponse.() -> Unit)? = null
+        ): Caller {
             val req = HeadRequest(url, isStream, byteSize, args=args, headers=headers, cookies=cookies,
                 username = username, password = password, timeout=timeout)
-            return Queue { req.async(it) }
+            return req.async(callback)
         }
     }
 
