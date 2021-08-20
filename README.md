@@ -88,71 +88,49 @@ val hiper = Hiper.getInstance().async() // for asynchronous requests
 ### Sending a simple GET request
 
 ```kotlin
-val caller = hiper.get("http://httpbin.org/get")
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
-caller.execute()
+val caller = hiper.get("http://httpbin.org/get") {
+    debug(text)
+}
 ```
 
 ### Sending a simple POST request
 
 ```kotlin
-val caller = hiper.post("http://httpbin.org/post")
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
-caller.execute()
+val caller = hiper.post("http://httpbin.org/post") {
+    debug(this)
+}
 ```
 
 ### Sending GET parameters with your request
 
 ```kotlin
-val args = Headers(
-    "name" to "Hiper",
-    "age" to 1
-)
-val caller = hiper.get("http://httpbin.org/get", args = args)
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
-caller.execute()
+val caller = hiper.get("http://httpbin.org/get", args = mix("name" to "Hiper", "age" to 1)) {
+    debug(this)
+}
 ```
 
 Or you can use inline args, headers, cookies or form using the `mix` method
 
 ```kotlin
-hiper.get("http://httpbin.org/get", args = mix("name" to "Hiper"), headers = mix("user-agent" to "Hiper/1.0").execute()
+hiper.get("http://httpbin.org/get", args = mix("name" to "Hiper"), headers = mix("user-agent" to "Hiper/1.0")
 ```
 
 ### Using custom headers
 
 ```kotlin
-val headers = Headers(
-    "User-Agent" to "Hiper/1.1"
-)
-val caller = hiper.get("http://httpbin.org/get", headers = headers)
-    .resolve { response -> }
-    .reject { response -> }
-    .catch { exception -> }
-caller.execute()
+val caller = hiper.get("http://httpbin.org/get", headers = mix("User-Agent" to "Hiper/1.1")) {
+    debug(this)
+}
 ```
 
 ### Downloading a file using Hiper.
 
 ```kotlin
-val caller = hiper.get("http://httpbin.org/get", isStream = true)
-    .reject { response -> }
-    .resolve { response ->
-        // use the stream
-        val stream = response.stream
-        ...
-
-        // remember to close the stream
-        stream.close()
-    }
-    .catch { exception -> }
-caller.execute()
+val caller = hiper.get("http://httpbin.org/get", isStream = true) {
+    // do things with the stream
+    ...
+    stream.close()
+}
 ```
 
 

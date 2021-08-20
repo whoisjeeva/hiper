@@ -67,7 +67,7 @@ class HeadRequest(
         return HiperResponse(
             isRedirect = response.isRedirect,
             statusCode = response.code,
-            message = response.message,
+            statusMessage = response.message,
             text = text,
             content = bytes,
             stream = stream,
@@ -76,12 +76,12 @@ class HeadRequest(
         )
     }
 
-    fun async(listener: Listener): Caller {
+    fun async(callback: (HiperResponse.() -> Unit)? = null): Caller {
         val request = build()
         val call = client.newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                listener.onFail(e)
+                callback?.invoke(HiperResponse(error = e))
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -100,14 +100,14 @@ class HeadRequest(
                 val hiperResponse = HiperResponse(
                     isRedirect = response.isRedirect,
                     statusCode = response.code,
-                    message = response.message,
+                    statusMessage = response.message,
                     text = text,
                     content = bytes,
                     stream = stream,
                     headers = headers,
                     isSuccessful = response.isSuccessful
                 )
-                listener.onSuccess(hiperResponse)
+                callback?.invoke(hiperResponse)
             }
         })
 

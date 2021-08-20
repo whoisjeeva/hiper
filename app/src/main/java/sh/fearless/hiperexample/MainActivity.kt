@@ -18,17 +18,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val hiper = Hiper.getInstance().async()
-        val dollar = '$'
-        val json = """
-            {"query":"\n    query browse(            ${dollar}input            : BrowseAsUgcInput!) {\n      browseAsUgc(input:             ${dollar}input            ) {\n        ...browseContentItemsResource\n      }\n    }\n    \n  fragment browseContentItemsResource on BrowseContentItems {\n    page\n    total\n    items {\n      ... on BrowseWallpaper {\n        id\n        contentType\n        title\n        tags\n        imageUrl\n        placeholderUrl\n        licensed\n      }\n\n      ... on BrowseRingtone {\n        id\n        contentType\n        title\n        tags\n        imageUrl\n        placeholderUrl\n        licensed\n        meta {\n          durationMs\n          previewUrl\n          gradientStart\n          gradientEnd\n        }\n      }\n    }\n  }\n\n  ","variables":{"input":{"contentType":"WALLPAPER","page":2,"size":24}}}
-        """.trimIndent()
-        hiper.post("https://api-gateway.zedge.net/", json = JSONObject(json)).resolve {
-            debug(it.text)
-        }.reject {
-            debug("Rejected:", it.text)
-        }.catch {
-            debug("Exception:", it)
-        }.execute()
+        hiper.head(url = "https://httpbin.org/get") {
+            debug(this)
+        }
     }
 
 
