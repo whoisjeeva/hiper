@@ -1,3 +1,0 @@
-include ':util'
-include ':app', ':http'
-rootProject.name='HiperExample'
