@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
             HiperExampleTheme {
                 val context = LocalContext.current
                 val stateDB = rememberStateDB(name = "test_store")
-                val textState = stateDB.getString("name").collectAsState(initial = "hello, world")
+                val textState by stateDB.getString("name").collectAsState(initial = "hello, world")
                 val launcher = rememberActivityResult {
                     context.toast("Permission: $it")
                 }
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Box {
                         Column {
-                            Text(text = textState.value, style = MaterialTheme.typography.h5)
+                            Text(text = textState, style = MaterialTheme.typography.h5)
                             Button(onClick = {
                                 async {
                                     stateDB.put("name", "jeeva : ${(0..10).random()}")

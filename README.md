@@ -3,12 +3,12 @@
 </p>
 
 <p align="center">
-    <a href="https://jitpack.io/#gumify/hiper"><img src="https://img.shields.io/jitpack/v/github/gumify/hiper?style=for-the-badge" alt="Release"></a>
-    <a href="https://travis-ci.com/gumify/hiper"><img src="https://img.shields.io/travis/com/gumify/hiper/master?style=for-the-badge" alt="Build Status"></a>
-    <a href="https://github.com/gumify/hiper/blob/master/LICENSE"><img src="https://img.shields.io/github/license/gumify/hiper.svg?style=for-the-badge" alt="License"></a>
-<!--     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/gumify/hiper?logo=GitHub&style=for-the-badge"> -->
-    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/gumify/hiper?logo=GitHub&style=for-the-badge">
-    <a href="https://github.com/gumify/hiper/issues"><img alt="GitHub open issues" src="https://img.shields.io/github/issues/gumify/hiper?style=for-the-badge"></a>
+    <a href="https://jitpack.io/#whoisjeeva/hiper"><img src="https://img.shields.io/jitpack/v/github/whoisjeeva/hiper?style=for-the-badge" alt="Release"></a>
+    <a href="https://travis-ci.com/whoisjeeva/hiper"><img src="https://img.shields.io/travis/com/whoisjeeva/hiper/master?style=for-the-badge" alt="Build Status"></a>
+    <a href="https://github.com/whoisjeeva/hiper/blob/master/LICENSE"><img src="https://img.shields.io/github/license/whoisjeeva/hiper.svg?style=for-the-badge" alt="License"></a>
+<!--     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/whoisjeeva/hiper?logo=GitHub&style=for-the-badge"> -->
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/whoisjeeva/hiper?logo=GitHub&style=for-the-badge">
+    <a href="https://github.com/whoisjeeva/hiper/issues"><img alt="GitHub open issues" src="https://img.shields.io/github/issues/whoisjeeva/hiper?style=for-the-badge"></a>
 </p>
 
 # Hiper - A Human Friendly HTTP Library for Android
@@ -28,21 +28,17 @@
 - [Using The Utils Library](#using-the-utils-library)
     - [Context.toast(o: Any?, isLong: Boolean = false)](#contexttoasto-any-islong-boolean--false)
     - [debug(vararg args: Any?)](#debugvararg-args-any-errorvararg-args-any-warnvararg-args-any-infovararg-args-any) also `error(vararg args: Any?)`, `warn(vararg args: Any?)`, `info(vararg args: Any?)`
-    - [onUiThread(callback: () -> Unit)](#onuithreadcallback----unit)
+    - [onUiThread(block: CoroutineScope.() -> Unit)](#onuithreadcallback----unit)
     - [async(block: suspend CoroutineScope.() -> Unit)](#asyncblock-suspend-coroutinescope---unit)
     - [sleep(millis: Long)](#sleepmillis-long)
-    - [CoroutineScope.run(block: () -> Unit)](#coroutinescoperunblock----unit)
+    - [CoroutineScope.run(block: CoroutineScope.() -> Unit)](#coroutinescoperunblock----unit)
     - :warning: @Deprecated [ignore(callback: Exception?.() -> Unit)](#contextisdarkthemeon-boolean)
     - [Context.isDarkThemeOn(): Boolean](#contextisdarkthemeon-boolean)
     - [Context.readFile(dir: String, fileName: String): ByteArray](#contextreadfiledir-string-filename-string-bytearray)
     - [Context.readFromRawFolder(path: String): ByteArray](#contextreadfromrawfolderpath-string-bytearray)
     - [fetch(url: String, callback: BufferedReader.() -> Unit)](#fetchurl-string-callback-bufferedreader---unit)
-    - [Context.newDialog(): Dialog](#contextnewdialog-dialog)
-    - [View.visible()](#viewvisible)
-    - [View.invisible()](#viewinvisible)
-    - [View.gone()](#viewgone)
-    - :warning: @Deprecated [TinyDB(appContext: Context)](#warning-deprecated-tinydbappcontext-context)
     - [WeeDB(appContext: Context)](#weedbappcontext-context)
+    - [StateDB(name: String)](#statedbname-string)
 
 ## Getting Started
 
@@ -60,13 +56,13 @@ allprojects {
 Add the dependency
 
 ```css
-implementation "com.github.gumify.hiper:http:$hiper_version"
+implementation "com.github.whoisjeeva.hiper:http:$hiper_version"
 ```
 
 For utils
 
 ```css
-implementation "com.github.gumify.hiper:util:$hiper_version"
+implementation "com.github.whoisjeeva.hiper:util:$hiper_version"
 ```
 
 
@@ -216,19 +212,6 @@ async {
 }
 ```
 
-### :warning: `@Deprecated ignore(callback: Exception?.() -> Unit)`
-
-If you are tired of writing `try {} catch(e: Exception) {}` to ignore exception.
-
-> **WARNING**: It does not works in some cases
-
-```kotlin
-ignore {
-    ...
-    debug(this)
-}
-```
-
 
 ### `Context.isDarkThemeOn(): Boolean`
 
@@ -266,61 +249,6 @@ Send a simple GET http request
 fetch("https://httpbin.org/ip") { reader ->
 
 }
-```
-
-### `Context.newDialog(): Dialog`
-
-Creating a `MaterialAlertDialog` is easier with it.
-
-```kotlin
-newDialog().withTitle("Hello, World")
-    .withMessage("Hi")
-    .withCancelable(false)
-    .withPositiveButton("OK") { dialog ->
-        dialog.dismiss()
-    }
-    .create() // returns AlertDialog
-    .show()
-```
-
-### `View.visible()`
-
-Set a `View` visibility to `View.VISIBLE`
-
-```kotlin
-val button: Button = findViewById(R.id.button)
-button.visible()
-```
-
-### `View.invisible()`
-
-Set a `View` visibility to `View.INVISIBLE`
-
-```kotlin
-val button: Button = findViewById(R.id.button)
-button.invisible()
-```
-
-### `View.gone()`
-
-Set a `View` visibility to `View.GONE`
-
-```kotlin
-val button: Button = findViewById(R.id.button)
-button.gone()
-```
-
-
-### :warning: `@Deprecated TinyDB(appContext: Context)`
-
-The utils library also contains `TinyDB` that allows you to persist some simple data.
-
-> **WARNING**: TinyDB is deprecated, there is a better version of TinyDB available as WeeDB
-
-```kotlin
-val tinyDB = TinyDB(applicationContext)
-tinyDB.putString("KEY", "hello")
-debug(tinyDB.getString("KEY"))
 ```
 
 ### `WeeDB(appContext: Context)`
@@ -423,5 +351,27 @@ persons.add(jeeva, senkathir)
 
 if (Person(name = "Jeeva", age = 26) in persons) {
     // ...
+}
+```
+
+
+### `StateDB(name: String)`
+
+
+Initialize inside a composable function
+
+```kotlin
+@Composable
+fun App() { 
+    val stateDB = rememberStateDB(name = "test_store")
+    val age by stateDB.getString("age").collectAsState(initial = 27)
+
+    Button(onClick = {
+        async {
+            stateDB.put("age", age+1)
+        }
+    }) {
+        Text(text = "Click me!")
+    }
 }
 ```
