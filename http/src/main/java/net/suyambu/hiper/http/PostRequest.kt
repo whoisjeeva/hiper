@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import java.net.Proxy
 import java.util.concurrent.TimeUnit
 
 class PostRequest(
@@ -28,7 +29,8 @@ class PostRequest(
     private val cookies: HashMap<String, Any>,
     private val username: String?,
     private val password: String?,
-    private val timeout: Long?
+    private val timeout: Long?,
+    private val proxy: Proxy?
 ) {
     private lateinit var client: OkHttpClient
 
@@ -74,7 +76,11 @@ class PostRequest(
             localClient.readTimeout(timeout, TimeUnit.SECONDS)
             localClient.writeTimeout(timeout, TimeUnit.SECONDS)
         }
-        client = localClient.build()
+        client = if (proxy != null) {
+            localClient.proxy(proxy).build()
+        } else {
+            localClient.build()
+        }
         if (files.isEmpty() && form.isEmpty() && json == null) {
             return request.url(urlBuilder.build().toString()).post("".toRequestBody()).build()
         }

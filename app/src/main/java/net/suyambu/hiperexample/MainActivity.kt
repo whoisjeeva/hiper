@@ -1,6 +1,7 @@
 package net.suyambu.hiperexample
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -14,13 +15,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import net.suyambu.hiper.http.Hiper
 import net.suyambu.hiper.util.*
 import net.suyambu.hiperexample.ui.theme.HiperExampleTheme
+import java.net.InetSocketAddress
+import java.net.Proxy
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
+
+        Hiper.getInstance().async().get(
+            url = "https://httpbin.org/ip",
+            proxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress("37.18.73.94", 5566))
+        ) { response ->
+            Log.d("hello", "Response: ${response.text}")
+        }
+
 
         setContent {
             HiperExampleTheme {

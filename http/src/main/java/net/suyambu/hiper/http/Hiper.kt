@@ -4,6 +4,7 @@ import org.json.JSONObject
 import net.suyambu.hiper.http.controllers.Caller
 import net.suyambu.hiper.http.data.HiperResponse
 import java.io.File
+import java.net.Proxy
 
 
 /* Hiper */
@@ -16,10 +17,11 @@ class Hiper {
         cookies: HashMap<String, Any> = hashMapOf(),
         username: String? = null,
         password: String? = null,
-        timeout: Long? = null
+        timeout: Long? = null,
+        proxy: Proxy? = null
     ): HiperResponse {
         return GetRequest(url, isStream, byteSize, args=args, headers=headers, cookies=cookies,
-            username = username, password = password, timeout=timeout).sync()
+            username = username, password = password, timeout=timeout, proxy=proxy).sync()
     }
 
     fun post(
@@ -32,10 +34,11 @@ class Hiper {
         cookies: HashMap<String, Any> = hashMapOf(),
         username: String? = null,
         password: String? = null,
-        timeout: Long? = null
+        timeout: Long? = null,
+        proxy: Proxy? = null
     ): HiperResponse {
         return PostRequest(url, isStream, byteSize, args=args, form=form, files=files, json=json, headers=headers,
-            cookies=cookies, username=username, password = password, timeout = timeout).sync()
+            cookies=cookies, username=username, password = password, timeout = timeout, proxy = proxy).sync()
     }
 
     fun head(
@@ -65,10 +68,11 @@ class Hiper {
             username: String? = null,
             password: String? = null,
             timeout: Long? = null,
+            proxy: Proxy? = null,
             callback: ((response: HiperResponse) -> Unit)? = null
         ): Caller {
             val req = GetRequest(url, isStream, byteSize, args=args, headers=headers, cookies=cookies,
-                username = username, password = password, timeout=timeout)
+                username = username, password = password, timeout=timeout, proxy = proxy)
             return req.async(callback)
         }
 
@@ -83,10 +87,11 @@ class Hiper {
             username: String? = null,
             password: String? = null,
             timeout: Long? = null,
+            proxy: Proxy? = null,
             callback: ((response: HiperResponse) -> Unit)? = null
         ): Caller {
             val req = PostRequest(url, isStream, byteSize, args=args, form=form, files=files, json=json,
-                headers=headers, cookies=cookies, username=username, password=password, timeout = timeout)
+                headers=headers, cookies=cookies, username=username, password=password, timeout = timeout, proxy = proxy)
             return req.async(callback)
         }
 
