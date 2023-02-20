@@ -51,10 +51,3 @@ class StateDB(private val context: Context, name: String) {
     }
 }
 
-
-@Composable
-fun rememberStateDB(name: String): StateDB {
-    val context = LocalContext.current
-    val stateDB = remember { StateDB(context, name) }
-    return stateDB
-}
