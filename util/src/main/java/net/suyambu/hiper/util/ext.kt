@@ -25,7 +25,7 @@ fun debug(vararg o: Any?) {
         for (i in o) {
             s += "$i "
         }
-        Log.d("[${it.lineNumber}]:${it.fileName}", s.dropLast(1))
+        Log.d("${it.lineNumber}@${it.fileName}", s.dropLast(1))
     }
 }
 
@@ -35,7 +35,7 @@ fun error(vararg o: Any?) {
         for (i in o) {
             s += "$i "
         }
-        Log.e("[${it.lineNumber}]:${it.fileName}", s.dropLast(1))
+        Log.e("${it.lineNumber}@${it.fileName}", s.dropLast(1))
     }
 }
 
@@ -45,7 +45,7 @@ fun warn(vararg o: Any?) {
         for (i in o) {
             s += "$i "
         }
-        Log.w("[${it.lineNumber}]:${it.fileName}", s.dropLast(1))
+        Log.w("${it.lineNumber}@${it.fileName}", s.dropLast(1))
     }
 }
 
@@ -55,7 +55,7 @@ fun info(vararg o: Any?) {
         for (i in o) {
             s += "$i "
         }
-        Log.i("[${it.lineNumber}]:${it.fileName}", s.dropLast(1))
+        Log.i("${it.lineNumber}@${it.fileName}", s.dropLast(1))
     }
 }
 
