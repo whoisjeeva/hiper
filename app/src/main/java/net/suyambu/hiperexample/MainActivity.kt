@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
 
         Hiper.getInstance().async().get(
             url = "https://httpbin.org/ip",
-            proxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress("37.18.73.94", 5566))
         ) { response ->
             Log.d("hello", "Response: ${response.text}")
         }
@@ -34,7 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             HiperExampleTheme {
                 val context = LocalContext.current
-                val stateDB = rememberStateDB(name = "test_store")
+                val stateDB = remember { StateDB(context, name="test_store") }
                 val textState by stateDB.getString("name").collectAsState(initial = "hello, world")
                 val launcher = rememberActivityResult {
                     context.toast("Permission: $it")
